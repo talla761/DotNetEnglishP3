@@ -1,20 +1,19 @@
 # DotNetEnglishP3
-Student repo for project 3 of the Back-end developer: .NET path
+Dépôt de l’étudiant pour le projet 3 du parcours Développeur Back-End .NET
 
-This project has a supporting database which will be created the first time the application is run. In order for the database to be correctly
-created, you must meet the prerequisites below and change the connection strings to point to the MSSQL Server running on you your local PC.
+Ce projet possède une base de données intégrée qui sera créée lorsque l’application sera exécutée pour la première fois. Pour la créer correctement, vous devez satisfaire aux prérequis ci-dessous et mettre à jour les chaînes de connexion pour qu’elles pointent vers le serveur MSSQL qui est exécuté sur votre PC en local.
 
-**Prerequisites**: MSSQL Developer 2019 or Express 2019 has been installed along with Microsoft SQL Server Management Studio (SSMS).
+**Prérequis** : MSSQL Developer 2019 ou Express 2019 doit être installé avec Microsoft SQL Server Management Studio (SSMS).
 
-MSSQL: https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+MSSQL : https://www.microsoft.com/fr-fr/sql-server/sql-server-downloads
 
-SSMS: https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16
+SSMS : https://docs.microsoft.com/fr-fr/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16
 
-*Note: earlier versions of MSSQL Server should work fine, but have not been tested.
+*Remarque : les versions antérieures de MSSQL Server devraient fonctionner sans problèmes, mais elles n’ont pas été testées.
 
-*In the P3AddNewFunctionalityDotNetCore project, open the appsettings.json file.*
+*Dans le projet P3AddNewFunctionalityDotNetCore, ouvrez le fichier appsettings.json.*
 
-You will see the ConnectionStrings section which defines the connection strings for the 2 databases used in this application.
+Vous avez la section ConnectionStrings qui définit les chaînes de connexion pour les 2 bases de données utilisées dans cette application.
 
       "ConnectionStrings":
       {
@@ -22,23 +21,18 @@ You will see the ConnectionStrings section which defines the connection strings 
         "P3Identity": "Server=.;Database=Identity;Trusted_Connection=True;MultipleActiveResultSets=true"
       }
   
+**P3Referential** - chaîne de connexion à la base de données de l’application.
 
-**P3Referential** - connection string to the application database.
+**P3Identity** - chaîne de connexion à la base de données des utilisateurs. Il s’agit d’une base de données indépendante, car une organisation utilise généralement plusieurs applications différentes. Au lieu
+de laisser chaque application définir ses propres utilisateurs (et plusieurs identifiants et mots de passe différents pour un seul utilisateur), une organisation peut disposer d’une base de données utilisateur unique et utiliser des autorisations et des rôles pour définir les applications auxquelles l’utilisateur a accès. De cette façon, un utilisateur peut accéder à toutes les applications de l’organisation avec le même identifiant et le même mot de passe, mais il n’aura accès qu’aux bases de données et aux actions définies dans la base de données des utilisateurs.
 
-**P3Identity** - connection string to the user database. This is a separate database as an organization will typically have many different applications. Rather than have each application define its own users (and many different logins and passwords for a single user), the organization can have just one user database and use permissions and roles to define what applications the user has access to. This way a user can access any of the organizations applications with the same login and password and will only be given access to databases and actions defined in the user database.
+Il existe des versions différentes de MSSQL (veuillez utiliser MSSQL pour ce projet et non une autre base de données). Lorsque vous configurez le serveur de base de données, diverses options modifient la configuration de sorte que les chaînes de connexion définies peuvent ne pas fonctionner.
 
-There are different versions of MSSQL (please use MSSQL for this project and not another database) and when setting up the database server, there are different options that will change the configuration, so the connection strings defined may not work.
+Les chaînes de connexion définies dans le projet sont configurées pour MSSQL Server Standard 2019. L’installation n’a pas créé de nom d’instance, le serveur est donc simplement désigné par « . », qui désigne l’instance par défaut de MSSQL Server fonctionnant sur la machine actuelle. Pendant l’installation, c’est l’utilisateur intégré de Windows qui est configuré dans le serveur MSSQL par défaut.
 
-The connection strings defined in the project are setup for MSSQL Server Standard 2019. The installation has not created an instance name, so the server is just referred to as "." which means the default instance of MSSQL server running on the current machine. The built in windows user which should be setup in MSSQL server by default during installation.
-
-If you have installed MSSQL Express, the value to use for Server is most likely .\SQLEXPRESS, so for example, your P3Referential connection string would be: -
+Si vous avez installé MSSQL Express, la valeur à utiliser pour Server est très probablement .\SQLEXPRESS. Donc votre chaîne de connexion P3Referential serait :
 
     "P3Referential": "Server=.\SQLEXPRESS;Database=P3Referential-2f561d3b-493f-46fd-83c9-6e2643e7bd0a;Trusted_Connection=True;MultipleActiveResultSets=true"
-
-When the application first runs, it will perform all the database migrations which includes seeding the database. An administration account is included that you can use to login:
-
-    Username: Admin
-    Password: P@ssword123
-
-If you have trouble connecting, first try to connection using Microsoft SQL Server Management Studio (make sure authentication type  is "Windows Authentication"), or refer to https://sqlserver-help.com/2011/06/19/help-whats-my-sql-server-name/.
-If you still have trouble, please ask your mentor for assistance.
+  
+Si vous avez des difficultés à vous connecter, essayez d’abord de vous connecter à l’aide de Microsoft SQL Server Management Studio (assurez-vous que le type d’authentification est « Authentification Windows »), ou consultez le site https://sqlserver-help.com/2011/06/19/help-whats-my-sql-server-name/.
+Si le problème persiste, demandez de l’aide à votre mentor.
