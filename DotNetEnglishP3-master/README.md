@@ -1,5 +1,5 @@
 # DotNetEnglishP3
-Dépôt de l’étudiant pour le projet 3 du parcours Développeur Back-End .NET
+Dépôt de l’étudiant pour le projet 3 du parcours Développeur Back-End .NET. Afin d'être au plus proche d'une situation professionnelle réelle, le code dans ce dépôt est en anglais.
 
 Ce projet possède une base de données intégrée qui sera créée lorsque l’application sera exécutée pour la première fois. Pour la créer correctement, vous devez satisfaire aux prérequis ci-dessous et mettre à jour les chaînes de connexion pour qu’elles pointent vers le serveur MSSQL qui est exécuté sur votre PC en local.
 
