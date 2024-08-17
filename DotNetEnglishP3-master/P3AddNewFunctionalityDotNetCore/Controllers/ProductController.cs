@@ -24,28 +24,28 @@ namespace P3AddNewFunctionalityDotNetCore.Controllers
             return View(products);
         }
 
-        [Authorize]
+        //[Authorize]
         public IActionResult Admin()
         {
             return View(_productService.GetAllProductsViewModel().OrderByDescending(p => p.Id));
         }
 
-        [Authorize]
+        //[Authorize]
         public ViewResult Create()
         {
             return View();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public IActionResult Create(ProductViewModel product)
         {
             List<string> modelErrors = _productService.CheckProductModelErrors(product);           
 
-            foreach (string error in modelErrors)
-            {
-                ModelState.AddModelError("", error);
-            }
+            //foreach (string error in modelErrors)
+            //{
+            //    ModelState.AddModelError("", error);
+            //}
 
             if (ModelState.IsValid)
             {
@@ -58,7 +58,7 @@ namespace P3AddNewFunctionalityDotNetCore.Controllers
             }
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public IActionResult DeleteProduct(int id)
         {
