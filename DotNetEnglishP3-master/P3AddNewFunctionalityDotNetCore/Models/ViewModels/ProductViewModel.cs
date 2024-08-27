@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 using System;
 using System.Resources;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities.Resources;
+using P3AddNewFunctionalityDotNetCore.Models.Services;
 
 namespace P3AddNewFunctionalityDotNetCore.Models.ViewModels
 {
@@ -11,22 +13,21 @@ namespace P3AddNewFunctionalityDotNetCore.Models.ViewModels
         [BindNever]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "MissingName")]
+        [Required(ErrorMessageResourceType = typeof(P3AddNewFunctionalityDotNetCore.Resources.Models.Services.ProductService), ErrorMessageResourceName = "MissingName")]
         public string Name { get; set; }
 
         public string Description { get; set; }
 
         public string Details { get; set; }
 
-        //[Required(ErrorMessage = "MissingQuantity", ErrorMessageResourceType = typeof(Resources.Models.Services.ProductService))]
-        [Required(ErrorMessage = "MissingQuantity")]
-        [RegularExpression("([0-9]*)", ErrorMessage = "QuantityNotAnInteger")]
-        [Range(1, int.MaxValue, ErrorMessage = "QuantityNotGreaterThanZero")]
+        [Required(ErrorMessageResourceType = typeof(P3AddNewFunctionalityDotNetCore.Resources.Models.Services.ProductService), ErrorMessageResourceName = "MissingQuantity")]
+        [RegularExpression("([0-9]*)", ErrorMessageResourceType = typeof(P3AddNewFunctionalityDotNetCore.Resources.Models.Services.ProductService), ErrorMessageResourceName = "QuantityNotAnInteger")]
+        [Range(1, int.MaxValue, ErrorMessageResourceType = typeof(P3AddNewFunctionalityDotNetCore.Resources.Models.Services.ProductService), ErrorMessageResourceName = "QuantityNotGreaterThanZero")]
         public string Stock { get; set; }
 
-        [Required(ErrorMessage = "MissingPrice")]
-        [RegularExpression("([0-9]*)", ErrorMessage = "PriceNotANumber")]
-        [Range(1, double.MaxValue, ErrorMessage = "PriceNotGreaterThanZero")]
+        [Required(ErrorMessageResourceType = typeof(P3AddNewFunctionalityDotNetCore.Resources.Models.Services.ProductService), ErrorMessageResourceName = "MissingPrice")]
+        [RegularExpression("([0-9]*)", ErrorMessageResourceType = typeof(P3AddNewFunctionalityDotNetCore.Resources.Models.Services.ProductService), ErrorMessageResourceName = "PriceNotANumber")]
+        [Range(1, double.MaxValue, ErrorMessageResourceType = typeof(P3AddNewFunctionalityDotNetCore.Resources.Models.Services.ProductService), ErrorMessageResourceName = "PriceNotGreaterThanZero")]
         public string Price { get; set; }
     }
 }

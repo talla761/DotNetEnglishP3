@@ -26,6 +26,11 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             _orderRepository = orderRepository;
             _localizer = localizer;
         }
+
+        public ProductService()
+        {
+        }
+
         public List<ProductViewModel> GetAllProductsViewModel()
         {
              
@@ -92,19 +97,42 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
         }
 
         // TODO this is an example method, remove it and perform model validation using data annotations
-        public List<string> CheckProductModelErrors(ProductViewModel product)
+        public List<String> CheckProductModelErrors(ProductViewModel product)
         {
-            List<string> modelErrors = new List<string>();
-            List<ValidationResult> modelValidations = new List<ValidationResult>();
-            var ctx = new ValidationContext(product, null, null);
+            var context = new ValidationContext(product, null, null);
+            var results = new List<ValidationResult>();
+            var errors = new List<string>();
 
-            foreach (var result in modelValidations)
+            bool isValid = Validator.TryValidateObject(product, context, results, true);
+
+            if (!isValid)
             {
-                modelErrors.Add(result.ErrorMessage);
+                foreach (var validationResult in results)
+                {
+                    errors.Add(validationResult.ErrorMessage);
+                }
             }
 
-            return modelErrors;
+            return errors;
         }
+
+        //public List<string> CheckProductModelErrors(ProductViewModel product)
+        //{
+        //    List<string> modelErrors = new List<string>();
+        //    var ctx = new ValidationContext(product, null, null);
+        //    var modelValidations = new List<ValidationResult>();
+
+        //    // Effectuer la validation
+        //    Validator.TryValidateObject(product, ctx, modelValidations, true);
+
+        //    // Ajouter les messages d'erreur à la liste modelErrors
+        //    foreach (var result in modelValidations)
+        //    {
+        //        modelErrors.Add(result.ErrorMessage);
+        //    }
+
+        //    return modelErrors;
+        //}
 
         public void SaveProduct(ProductViewModel product)
         {

@@ -50,6 +50,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.11" />
+    <PackageReference Include="Microsoft.TestPlatform.TestHost" Version="17.4.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
@@ -60,6 +61,12 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Models\Services\ProductService.fr.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\Services\ProductService.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Models\ViewModels\ProductViewModel.fr.resx">
+      <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>
 
