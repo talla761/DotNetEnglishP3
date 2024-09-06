@@ -1,16 +1,44 @@
 ﻿using FluentAssertions;
+using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
+using Moq;
+using P3AddNewFunctionalityDotNetCore.Data;
+using P3AddNewFunctionalityDotNetCore.Models;
+using P3AddNewFunctionalityDotNetCore.Models.Entities;
+using P3AddNewFunctionalityDotNetCore.Models.Repositories;
 using P3AddNewFunctionalityDotNetCore.Models.Services;
 using P3AddNewFunctionalityDotNetCore.Models.ViewModels;
+using P3AddNewFunctionalityDotNetCore.Resources.Models.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace P3AddNewFunctionalityDotNetCore.Tests
 {
     public class ProductServiceTests
     {
-        private readonly ProductService _productService = new();
+
+        private readonly P3AddNewFunctionalityDotNetCore.Models.Services.ProductService _productService = new();
+
+        // Arrange
+        private readonly Mock<ICart> _mockCart = new ();
+        private static DbContextOptions<P3Referential> option = new DbContextOptionsBuilder<P3Referential>().UseSqlServer("Server=PCYVAN\\SQLEXPRESS;Database=P3Referential-2f561d3b-493f-46fd-83c9-6e2643e7bd0a;Trusted_Connection=True;MultipleActiveResultSets=true").Options;
+        private static IConfiguration _configuration;
+        private static P3Referential _context = new P3Referential(option, _configuration);
+
+        private readonly IProductRepository  _ProductRepository = new ProductRepository(_context);
+        private readonly Mock<IOrderRepository>  _mockOrderRepository = new ();
+        private readonly Mock<IStringLocalizer<P3AddNewFunctionalityDotNetCore.Models.Services.ProductService>> _mockLocalizer = new ();
+
+        public ProductServiceTests()
+        {
+            _productService = new(_mockCart.Object, _ProductRepository, _mockOrderRepository.Object, _mockLocalizer.Object);
+        }
 
         /// <summary>
         /// Take this test method as a template to write your test method.
@@ -21,7 +49,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         #region Name Test
         //Test unitaire - Nom manquant
         [Fact]
-        public void ProductService_DoitAfficherUneErreur_LorsqueLeNomEstManquant()
+        public void ProductService_ShouldShowAnError_WhenNameIsMissing() //ProductService_DoitAfficherUneErreur_LorsqueLeNomEstManquant
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -45,7 +73,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         #region Price Test
         //Test unitaire - Prix manquant
         [Fact]
-        public void ProductService_DoitAfficherUneErreur_LorsqueLePrixEstManquant()
+        public void ProductService_MustShowAnError_WhenPriceIsMissing() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstManquant
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -59,7 +87,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             //Action
             List<string> errors = _productService.CheckProductModelErrors(product1);
 
-            // Assert
+            //Assert
             Assert.NotEmpty(errors); // Vérifie que la liste d'erreurs n'est pas vide
             Assert.Equal(1, errors.Count); // Vérifie qu'il n'y a qu'une seule erreur
             Assert.Contains("Prix manquant", errors); // Vérifie que le bon message d'erreur est retourné
@@ -67,7 +95,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         //Test unitaire - Prix pas nombre - Prix pas supérieur à zéro
         [Fact]
-        public void ProductService_DoitAfficherUneErreur_LorsqueLePrixEstPasNombreEntier()
+        public void ProductService_MustShowAnError_WhenPriceIsNotIntegerNumber() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstPasNombreEntier
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -91,7 +119,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         //Test unitaire - Prix pas supérieur à zéro
         [Fact]
-        public void ProductService_DoitAfficherUneErreur_LorsqueLePrixEstPasSuperieurAZero()
+        public void ProductService_MustShowAnError_WhenThePriceIsNotHigherZero() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstPasSuperieurAZero
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -116,7 +144,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         #region Stock Test
         //Test unitaire - Prix manquant
         [Fact]
-        public void ProductService_DoitAfficherUneErreur_LorsqueLeStockEstManquant()
+        public void ProductService_MustShowAnError_WhenStockIsMissing() //ProductService_DoitAfficherUneErreur_LorsqueLeStockEstManquant
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -138,7 +166,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         //Test unitaire - Stock pas nombre - Stock pas supérieur à zéro
         [Fact]
-        public void ProductService_DoitAfficherUneErreur_LorsqueLeStockEstPasNombreEntier()
+        public void ProductService_MustShowAnError_WhenStockIsNotIntegerNumber() //ProductService_DoitAfficherUneErreur_LorsqueLeStockEstPasNombreEntier
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -162,7 +190,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         //Test unitaire - Stock pas supérieur à zéro
         [Fact]
-        public void ProductService_DoitAfficherUneErreur_LorsqueLeStockEstPasSuperieurAZero()
+        public void ProductService_DoitAfficherUneErreur_LorsqueLeStockEstPasSuperieurAZero() //ProductService_MustShowAnError_WhenStockIsNotHigherZero
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -183,13 +211,12 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
             Assert.Contains("Quantité pas supérieure à zéro", errors); // Vérifie que le bon message d'erreur est retourné
         }
         #endregion
-        // TODO write test methods to ensure a correct coverage of all possibilities
 
+        #region Test Intégration 
         [Fact]
-        public void AddAndRemoveProduct_ShouldWorkCorrectly()
+        public void AddAndRemoveProduct_ShouldWorkCorrectly() //L'ajout et la suppression de produits devraient fonctionner correctement
         {
-            // Arrange
-            ProductViewModel product1 = new ProductViewModel
+            ProductViewModel product = new ProductViewModel
             {
                 Name = "NameTest",
                 Description = "DescriptionTest",
@@ -198,25 +225,33 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
                 Stock = "5"
             };
 
-            // Act: Ajouter le produit
-            _productService.SaveProduct(product1);
+            //AJOUTER UN NOUVEAU PRODUIT
+            //Arr -- Verifier le nombre de produit en base de donnéé
+            int countProduct = _productService.GetAllProducts().Count(); 
 
-            // Assert: Vérifier que le produit est ajouté correctement
-            var addedProduct = _productService.MapToProductEntity(product1); // Obtenir le produit ajouté
+            //Act -- Ajout d'un nouveau produit
+            _productService.SaveProduct(product);
 
-            Assert.NotNull(addedProduct);
-            Assert.Equal(1, addedProduct.Id); // Vérifier que le produit a un ID correct
+            int countNewProduct = _productService.GetAllProducts().Count(); 
 
-            Assert.Equal(product1.Name, addedProduct.Name); // Vérifier que le nom de l'utilisateur est correct
-            Assert.Equal(product1.Details, addedProduct.Details);   // Vérifier que l'âge de l'utilisateur est correct
+            //Assert -- Verifier qu'un nouveau produit a été a
+            Assert.Equal(countNewProduct, countProduct+1);
 
 
-            // Act: Supprimer le produit
-            _productService.DeleteProduct(product1.Id);
+            //SUPPRIMMER UN NOUVEAU PRODUIT
+            //Arr -- On recupere l'id qu'on vient d'ajouter (maxId)
+            int maxId = _productService.GetAllProducts().Max(product => product.Id); // Simulated database-generated ID
 
-            // Assert: Vérifier que le produit est supprimé correctement
-            var retrievedProduct = _productService.GetProduct(product1.Id);
-            Assert.Null(retrievedProduct); // Vérifier que l'utilisateur n'existe plus
+            // Act -- Suppression de maxId
+            _productService.DeleteProduct(maxId);
+
+            //Assert -- Verifier que maxId n'existe plus car il a été supprimer
+            bool result = _productService.GetAllProducts().Any(product => product.Id == maxId);
+            countNewProduct = _productService.GetAllProducts().Count();
+            Assert.Equal(countNewProduct, countProduct); // On se rassure que le nombre de produit = au nombre de produit de départ
+            Assert.False(result);
+
         }
+#endregion
     }
 }
