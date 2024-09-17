@@ -73,7 +73,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         #region Price Test
         //Test unitaire - Prix manquant
         [Fact]
-        public void ProductService_MustShowAnError_WhenPriceIsMissing() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstManquant
+        public void ProductService_ShouldShowAnError_WhenPriceIsMissing() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstManquant
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -95,7 +95,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         //Test unitaire - Prix pas nombre - Prix pas supérieur à zéro
         [Fact]
-        public void ProductService_MustShowAnError_WhenPriceIsNotIntegerNumber() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstPasNombreEntier
+        public void ProductService_ShouldShowAnError_WhenPriceIsNotIntegerNumber() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstPasNombreEntier
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -119,7 +119,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         //Test unitaire - Prix pas supérieur à zéro
         [Fact]
-        public void ProductService_MustShowAnError_WhenThePriceIsNotHigherZero() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstPasSuperieurAZero
+        public void ProductService_ShouldShowAnError_WhenThePriceIsNotHigherZero() //ProductService_DoitAfficherUneErreur_LorsqueLePrixEstPasSuperieurAZero
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -136,7 +136,6 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
             // Assert
             Assert.NotEmpty(errors); // Vérifie que la liste d'erreurs n'est pas vide
-            //Assert.Equal(2, errors.Count); // Vérifie qu'il n'y a qu'une seule erreur
             Assert.Contains("Prix pas supérieur à zéro", errors); // Vérifie que le bon message d'erreur est retourné
         }
         #endregion
@@ -144,7 +143,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
         #region Stock Test
         //Test unitaire - Prix manquant
         [Fact]
-        public void ProductService_MustShowAnError_WhenStockIsMissing() //ProductService_DoitAfficherUneErreur_LorsqueLeStockEstManquant
+        public void ProductService_ShouldShowAnError_WhenStockIsMissing() //ProductService_DoitAfficherUneErreur_LorsqueLeStockEstManquant
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -166,7 +165,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         //Test unitaire - Stock pas nombre - Stock pas supérieur à zéro
         [Fact]
-        public void ProductService_MustShowAnError_WhenStockIsNotIntegerNumber() //ProductService_DoitAfficherUneErreur_LorsqueLeStockEstPasNombreEntier
+        public void ProductService_ShouldShowAnError_WhenStockIsNotIntegerNumber() //ProductService_DoitAfficherUneErreur_LorsqueLeStockEstPasNombreEntier
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -190,7 +189,7 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
         //Test unitaire - Stock pas supérieur à zéro
         [Fact]
-        public void ProductService_DoitAfficherUneErreur_LorsqueLeStockEstPasSuperieurAZero() //ProductService_MustShowAnError_WhenStockIsNotHigherZero
+        public void ProductService_ShouldShowAnError_WhenStockIsNotHigherZero() //ProductService_DoitAfficherUneErreur_LorsqueLeStockEstPasSuperieurAZero
         {
             //Arrange
             ProductViewModel product1 = new ProductViewModel
@@ -207,14 +206,13 @@ namespace P3AddNewFunctionalityDotNetCore.Tests
 
             // Assert
             Assert.NotEmpty(errors); // Vérifie que la liste d'erreurs n'est pas vide
-            //Assert.Equal(2, errors.Count); // Vérifie qu'il n'y a qu'une seule erreur
             Assert.Contains("Quantité pas supérieure à zéro", errors); // Vérifie que le bon message d'erreur est retourné
         }
         #endregion
 
         #region Test Intégration 
         [Fact]
-        public void AddAndRemoveProduct_ShouldWorkCorrectly() //L'ajout et la suppression de produits devraient fonctionner correctement
+        public void ProductService_ShouldAddAndRemoveProduct_WhenProductCorrectly() //L'ajout et la suppression de produits devraient fonctionner correctement
         {
             ProductViewModel product = new ProductViewModel
             {

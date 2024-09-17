@@ -116,24 +116,6 @@ namespace P3AddNewFunctionalityDotNetCore.Models.Services
             return errors;
         }
 
-        //public List<string> CheckProductModelErrors(ProductViewModel product)
-        //{
-        //    List<string> modelErrors = new List<string>();
-        //    var ctx = new ValidationContext(product, null, null);
-        //    var modelValidations = new List<ValidationResult>();
-
-        //    // Effectuer la validation
-        //    Validator.TryValidateObject(product, ctx, modelValidations, true);
-
-        //    // Ajouter les messages d'erreur à la liste modelErrors
-        //    foreach (var result in modelValidations)
-        //    {
-        //        modelErrors.Add(result.ErrorMessage);
-        //    }
-
-        //    return modelErrors;
-        //}
-
         public void SaveProduct(ProductViewModel product)
         {
             var productToAdd = MapToProductEntity(product);
